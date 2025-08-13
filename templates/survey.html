@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Group 6 SurveyApp - Available Surveys</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            400: '#60a5fa',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                        }
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.8s ease-in-out',
+                        'slide-up': 'slideUp 0.6s ease-out',
+                        'scale-in': 'scaleIn 0.5s ease-out',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(30px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+        @keyframes scaleIn {
+            from { 
+                opacity: 0; 
+                transform: scale(0.9); 
+            }
+            to { 
+                opacity: 1; 
+                transform: scale(1); 
+            }
+        }
+        .survey-card {
+            transition: all 0.3s ease;
+        }
+        .survey-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .mobile-menu-hidden {
+            display: none;
+        }
+    </style>
+
+    <!-- Custom Styles  from google-->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Pacifico&family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet">
+       <!-- ADD THIS GOOGLE FONTS LINK FOR ROBOTO -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700;1,900&display=swap" rel="stylesheet">
+     <style>
+        /* Roboto Font Classes */
+        .roboto-light { font-family: 'Roboto', sans-serif; font-weight: 300; }
+        .roboto-regular { font-family: 'Roboto', sans-serif; font-weight: 400; }
+        .roboto-medium { font-family: 'Roboto', sans-serif; font-weight: 500; }
+        .roboto-bold { font-family: 'Roboto', sans-serif; font-weight: 700; }
+        
+        /* ✅ SOURCE SANS PRO CLASSES GO HERE */
+        .source-light { font-family: 'Source Sans Pro', sans-serif; font-weight: 300; }
+        .source-regular { font-family: 'Source Sans Pro', sans-serif; font-weight: 400; }
+        .source-semibold { font-family: 'Source Sans Pro', sans-serif; font-weight: 600; }
+        .source-bold { font-family: 'Source Sans Pro', sans-serif; font-weight: 700; }
+        .source-black { font-family: 'Source Sans Pro', sans-serif; font-weight: 900; }
+        
+        /* Optional: Default font for entire site */
+       /* body {
+            font-family: 'Source Sans Pro', sans-serif;
+        }*/
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation Header -->
+    <nav class="bg-white shadow-sm border-b border-gray-100 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <!-- Logo -->
+                <div class="flex items-center space-x-2">
+                    <div class="bg-primary-500 rounded-lg p-2">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+                        </svg>
+                    </div>
+                    <span class="text-xl font-bold text-gray-900" style="font-family: 'Dancing Script', cursive;">Group 6 SurveyApp</span>
+                </div>
+                
+                <!-- Navigation Links - Desktop -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="/templates/index.html" class="text-gray-600 hover:text-primary-600 transition-colors roboto-bold">Home</a>
+                    <a href="/templates/survey.html" class="text-primary-600 font-medium roboto-bold">Surveys</a>
+                    <a href="#about" class="text-gray-600 hover:text-primary-600 transition-colors roboto-bold">About</a>
+                    <a href="#contact" class="text-gray-600 hover:text-primary-600 transition-colors roboto-bold">Contact</a>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden p-2" onclick="toggleMobileMenu()">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="mobile-menu-hidden md:hidden pb-4">
+                <div class="flex flex-col space-y-2">
+                    <a href="/templates/index.html" class="text-gray-600 hover:text-primary-600 py-2 roboto-bold">Home</a>
+                    <a href="/templates/survey.html" class="text-primary-600 font-medium py-2 roboto-bold">Surveys</a>
+                    <a href="#about" class="text-gray-600 hover:text-primary-600 py-2 roboto-bold">About</a>
+                    <a href="#contact" class="text-gray-600 hover:text-primary-600 py-2 roboto-bold">Contact</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-br from-primary-50 to-white py-12">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                
+                <!-- Left Text -->
+                <div>
+                    <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Available Surveys</h1>
+                    <p class="text-xl text-gray-600 mb-6 source-regular">
+                        Take quick, fun, and meaningful surveys designed by Group 6 Survey. 
+                        Help us gather insights to improve our campus and learning experiences.
+                        Share your thoughts, ideas, and experiences to help shape a better campus life. From academics to 
+                        student wellness, your feedback makes a real difference — and it only takes a few minutes.
+                    </p>
+                    <a href="#surveys" 
+                       class="inline-block bg-primary-500 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-primary-600 transition-all transform hover:scale-105 shadow-lg roboto-bold">
+                        Explore Surveys
+                    </a>
+                </div>
+                
+                <!-- Right Image -->
+                <div class="flex justify-center items-center h-[28rem] w-full">
+                    <img src="/static/images/test.png" alt="Survey Illustration" class="h-full w-full object-cover rounded-xl">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Survey Cards Section -->
+    <section id="surveys" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Section Header -->
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4" style="font-family: 'Dancing Script', cursive;">
+                    Check from our Varieties of Surveys Below
+                </h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto roboto-light">
+                    Choose from our collection of thoughtfully designed surveys.
+                </p>
+            </div>
+
+            <!-- Survey Cards Grid -->
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Survey Card 1 -->
+                <div class="survey-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden cursor-pointer" onclick="navigateToSurvey('food-survey')">
+                    <div class="bg-slate-700 p-6 text-white">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="bg-primary-100 rounded-lg p-3">
+                                <svg class="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                                </svg>
+                            </div>
+                            <span class="bg-white bg-opacity-20 text-xs font-medium px-3 py-1 rounded-full roboto-medium">15 Questions</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 roboto-bold">Food Survey</h3>
+                        <p class="text-gray-100 text-sm roboto-regular">Share your dining preferences and help us improve campus food services</p>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center text-sm text-gray-500">
+                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span class="text-gray-900"> 5-7 minutes</span>
+                            </div>
+                            <div class="text-primary-500 font-medium text-sm">Take Survey →</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Survey Card 2 -->
+                <div class="survey-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden cursor-pointer" onclick="navigateToSurvey('academic-survey')">
+                    <div class="bg-slate-500 p-6 text-white">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="bg-white bg-opacity-20 rounded-lg p-3">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                                </svg>
+                            </div>
+                            <span class="bg-white bg-opacity-20 text-xs font-medium px-3 py-1 rounded-full roboto-medium">20 Questions</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 roboto-bold text-slate-700">Academic Experience</h3>
+                        <p class="text-gray-100 text-sm roboto-regular">Help us understand your learning experience and course satisfaction</p>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center text-sm text-gray-500">
+                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span class="text-gray-900">8-10 minutes</span>
+                            </div>
+                            <div class="text-primary-500 font-medium text-sm">Take Survey →</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Survey Card 3 -->
+                <div class="survey-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden cursor-pointer" onclick="navigateToSurvey('campus-life-survey')">
+                    <div class="bg-slate-600 p-6 text-white">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="bg-white bg-opacity-20 rounded-lg p-3">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                                </svg>
+                            </div>
+                            <span class="bg-white bg-opacity-20 text-xs font-medium px-3 py-1 rounded-full roboto-medium">12 Questions</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 roboto-bold">Campus Life</h3>
+                        <p class="text-gray-100 text-sm roboto-regular">Share your thoughts on campus facilities, activities, and overall experience</p>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center text-sm text-gray-500">
+                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span class="text-gray-900">4-6 minutes</span>
+                            </div>
+                            <div class="text-primary-500 font-medium text-sm">Take Survey →</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Survey Card 4 -->
+                <div class="survey-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden cursor-pointer" onclick="navigateToSurvey('technology-survey')">
+                    <div class="bg-slate-600 p-6 text-white">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="bg-primary-100 rounded-lg p-3">
+                                <svg class="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                </svg>
+                            </div>
+                            <span class="bg-white bg-opacity-20 text-xs font-medium px-3 py-1 rounded-full roboto-medium">18 Questions</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 roboto-bold">Technology Usage</h3>
+                        <p class="text-gray-100 text-sm roboto-regular">Help us understand how you use technology for learning and daily activities</p>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center text-sm text-gray-500">
+                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span class="text-gray-900">6-8 minutes</span>
+                            </div>
+                            <div class="text-primary-500 font-medium text-sm">Take Survey →</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Survey Card 5 -->
+                <div class="survey-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden cursor-pointer" onclick="navigateToSurvey('wellness-survey')">
+                    <div class="bg-slate-700 p-6 text-white">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="bg-white bg-opacity-20 rounded-lg p-3">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                </svg>
+                            </div>
+                            <span class="bg-white bg-opacity-20 text-xs font-medium px-3 py-1 rounded-full roboto-medium">14 Questions</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 roboto-bold">Student Wellness</h3>
+                        <p class="text-gray-100 text-sm roboto-regular">Share insights about your mental health, stress levels, and wellness needs</p>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center text-sm text-gray-500">
+                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span class="text-gray-900">5-7 minutes</span>
+                            </div>
+                            <div class="text-primary-500 font-medium text-sm">Take Survey →</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Survey Card 6 -->
+                <div class="survey-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden cursor-pointer" onclick="navigateToSurvey('future-plans-survey')">
+                    <div class="bg-slate-500 p-6 text-white">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="bg-white bg-opacity-20 rounded-lg p-3">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                                </svg>
+                            </div>
+                            <span class="bg-white bg-opacity-20 text-xs font-medium px-3 py-1 rounded-full roboto-medium">16 Questions</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 roboto-bold text-slate-700">Future Plans</h3>
+                        <p class="text-gray-100 text-sm roboto-regular">Tell us about your career goals, aspirations, and post-graduation plans</p>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center text-sm text-gray-500">
+                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span class="text-gray-900">7-9 minutes</span>
+                            </div>
+                            <div class="text-primary-500 font-medium text-sm">Take Survey →</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Call to Action -->
+            <div class="text-center mt-12">
+                <p class="text-gray-600 mb-6 roboto-regular">Want your own Survey?</p>
+                <a href="/" class="bg-primary-500 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-primary-600 transition-all transform hover:scale-105 shadow-lg roboto-bold">
+                    Create a Custom Survey
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8">
+                <!-- Company Info -->
+                <div class="md:col-span-2">
+                    <div class="flex items-center space-x-2 mb-4">
+                        <div class="bg-primary-500 rounded-lg p-2">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+                            </svg>
+                        </div>
+                        <span class="text-xl font-bold">Group 6 Survey App</span>
+                    </div>
+                    <p class="text-gray-300 mb-4">
+                        Making survey creation and data collection simple for everyone. Join our community and start gathering valuable insights today.
+                    </p>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="font-semibold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="/templates/index.html" class="text-gray-300 hover:text-white transition-colors">Home</a></li>
+                        <li><a href="/templates/survey.html" class="text-gray-300 hover:text-white transition-colors">Surveys</a></li>
+                        <li><a href="#about" class="text-gray-300 hover:text-white transition-colors">About</a></li>
+                        <li><a href="#contact" class="text-gray-300 hover:text-white transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Support -->
+                <div>
+                    <h3 class="font-semibold mb-4">Support</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#help" class="text-gray-300 hover:text-white transition-colors">Help Center</a></li>
+                        <li><a href="#privacy" class="text-gray-300 hover:text-white transition-colors">Privacy Policy</a></li>
+                        <li><a href="#terms" class="text-gray-300 hover:text-white transition-colors">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Bottom Footer -->
+            <div class="border-t border-gray-700 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-300 text-sm">
+                    © Group 6 Survey App 2025. All rights reserved.
+                </p>
+                <div class="flex space-x-4 mt-4 md:mt-0">
+                    <!-- Add social links or other footer items here if needed -->
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/static/index.js"></script>
+</body>
+</html>
